@@ -1,25 +1,38 @@
 const express = require("express");
 const router = express();
-const { create, index, find, update, destroy } = require("./controller");
+const {
+  create,
+  index,
+  find,
+  update,
+  destroy,
+  changeStatus,
+} = require("./controller");
 const {
   authenticateUser,
   authorizeRoles,
 } = require("../../../middlewares/auth");
 
-router.get("/events", authenticateUser, authorizeRoles("organizer", "admin"), index);
-router.get("/events/:id", authenticateUser, authorizeRoles("organizer", "admin"), find);
+router.get("/events", authenticateUser, authorizeRoles("organizer"), index);
+router.get("/events/:id", authenticateUser, authorizeRoles("organizer"), find);
 router.put(
   "/events/:id",
   authenticateUser,
-  authorizeRoles("organizer", "admin"),
+  authorizeRoles("organizer"),
   update
 );
 router.delete(
   "/events/:id",
   authenticateUser,
-  authorizeRoles("organizer", "admin"),
+  authorizeRoles("organizer"),
   destroy
 );
-router.post("/events", authenticateUser, authorizeRoles("organizer", "admin"), create);
+router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 
+router.put(
+  "/events/:id/status",
+  authenticateUser,
+  authorizeRoles("organizer"),
+  changeStatus
+);
 module.exports = router;
